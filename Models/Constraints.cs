@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +13,64 @@ namespace WebApplication2.Models
 {
     class Constraints
     {
+        //function to generate order ID
+        public static string generateOrderID()
+        {
+            
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["CGICon"].ConnectionString);
+            
+            SqlCommand cmd = new SqlCommand("select OrderID from Orders order by OrderID desc", con);
+            string yyyy = DateTime.Now.Year.ToString();
+            string mm = DateTime.Now.Month.ToString();
+            string dd = DateTime.Now.Date.ToString();
+            if (con.State == ConnectionState.Closed)
+                con.Open();
+            string fullid = "";
+            SqlDataReader dr = cmd.ExecuteReader(); 
+            if (dr.HasRows)
+            {
+                dr.Read();
+                string id = dr["OrderID"].ToString();
+                string oid = id.Substring(0, 2);
+                string date = id.Substring(2, 8);
+                int orderno = int.Parse(id.Substring(10,3));
+                orderno++;
+                if (orderno < 10)
+                    fullid ="OD" + yyyy + mm + dd + "00" + orderno;
+                else if (orderno >= 10 && orderno < 100)
+                    fullid = "OD" + yyyy + mm + dd + "0" + orderno;
+                else
+                    fullid = "OD" + yyyy + mm + dd + "" + orderno;
+
+            }
+            else
+            {
+
+                fullid = "OD" + yyyy + mm + dd + "001";
+            }
+            return fullid;
+            
+        }
+        //FUNCTION TO CHECK AVAILABILITY OF PRODUCT
+        public static int availability(int pid,int qty)
+        {
+            int res = 0;
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["CGICon"].ConnectionString);
+            SqlCommand cmd = new SqlCommand("select Quantity from Product where ProductID = @ProductID", con);
+            if (con.State == ConnectionState.Closed)
+                con.Open();
+            cmd.Parameters.AddWithValue("@ProductID",pid);
+            SqlDataReader dt = cmd.ExecuteReader();
+            if (dt.HasRows)
+            {
+                dt.Read();
+
+                int q = int.Parse(dt[0].ToString());
+                if (q >= qty && qty > 0)
+                    res = 1;
+            }
+            return res;
+        }
         //FUNCTION TO VALIDATE SIGN IN
         public static int validate(string username,string password)
         {
