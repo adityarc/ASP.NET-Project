@@ -1,4 +1,4 @@
-﻿
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +8,34 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
 
+
 namespace WebApplication2.Models
 {
     class Insert
     {
+        
+        public static int createorder(string cid,int pid,string add,double bill)
+        {
+           
+            string oid = Constraints.generateOrderID();
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["CGICon"].ConnectionString);
+            if (con.State == ConnectionState.Closed)
+                con.Open();
+            SqlCommand cmd = new SqlCommand("insertintoorders", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@OrderID", oid);
+            cmd.Parameters.AddWithValue("@CustomerID", cid);
+            cmd.Parameters.AddWithValue("@ProductID", pid);
+            cmd.Parameters.AddWithValue("@delivery", add);
+            cmd.Parameters.AddWithValue("@billamt", bill);
+            int result = cmd.ExecuteNonQuery();
+            return result;
+
+            
+
+
+        }
+        //to check if the phone number or email already exists in the data base or not
         public static int exists(string phone,string email)
         {
             int res = 0;
