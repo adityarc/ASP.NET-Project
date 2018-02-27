@@ -1,4 +1,4 @@
-﻿<%@ Page MasterPageFile="~/WebsiteMaster.Master" Theme="BGhue" Language="C#" AutoEventWireup="true" CodeBehind="CustomerDetails.aspx.cs" Inherits="WebApplication2.CustomerDetails" %>
+<%@ Page MasterPageFile="~/WebsiteMaster.Master" Theme="BGhue" Language="C#" AutoEventWireup="true" CodeBehind="CustomerDetails.aspx.cs" Inherits="WebApplication2.CustomerDetails" %>
 
 <asp:Content runat="server" ContentPlaceHolderID="ContentPlaceHolder2" >
     <title>Customer Details Form</title>
