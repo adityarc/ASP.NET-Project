@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -26,16 +26,16 @@ namespace WebApplication2
             }
         }
 
-        protected void cmdSignOut_Click(object sender, EventArgs e)
+       
+        
+
+        protected void DataList1_ItemCommand(object source, DataListCommandEventArgs e)
         {
-            Session.Remove("UserID");
-            // Session.Abandon();
-            if (Session["UserID"] == null)
+            if(e.CommandName == "cmd_buyproduct")
             {
-                Response.Redirect("LoginForm.aspx");
+                int PID = int.Parse(e.CommandArgument.ToString());
+                Response.Redirect("OrderPage.aspx?PID="+PID);
             }
         }
-
-        
     }
 }
